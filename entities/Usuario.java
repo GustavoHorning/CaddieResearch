@@ -16,6 +16,8 @@ public class Usuario extends Pessoa {
 
     public void setValor_total_investido(double valor_total_investido) {
         this.valor_total_investido = valor_total_investido;
+
+
         
     }
 }
