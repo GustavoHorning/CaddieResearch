@@ -4,9 +4,9 @@ public class Ativo {
     private String ticket;
     private String nomeEmpresa;
 
-    public Ativo(String ticket, String nome_empresa) {
+    public Ativo(String ticket, String nomeEmpresa) {
         this.ticket = ticket;
-        this.nomeEmpresa = nome_empresa;
+        this.nomeEmpresa = nomeEmpresa;
     }
 
     public String getTicket() {
@@ -17,12 +17,12 @@ public class Ativo {
         this.ticket = ticket;
     }
 
-    public String getNome_empresa() {
+    public String getNomeEmpresa() {
         return nomeEmpresa;
     }
 
-    public void setNome_empresa(String nome_empresa) {
-        this.nomeEmpresa = nome_empresa;
+    public void setNomeEmpresa(String nomeEmpresa) {
+        this.nomeEmpresa = nomeEmpresa;
 
     }
 }
