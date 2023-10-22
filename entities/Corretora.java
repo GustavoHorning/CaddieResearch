@@ -35,7 +35,7 @@ public abstract class Corretora {
         this.imposto = imposto;
     }
 
-    public abstract void calculoTaxaCorretagem(double valorInvestido);
+    public abstract double calculoTaxaCorretagem(double valorInvestido);
 
     public abstract void calculoImposto(int tempoDeTranding, double lucro);
 }

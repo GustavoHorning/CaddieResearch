@@ -9,19 +9,23 @@ public class BancoCentralFicticio extends Corretora {
 
 
     @Override
-    public void calculoTaxaCorretagem(double valorInvestido) {
+    public double calculoTaxaCorretagem(double valorInvestido) {
         double taxaFixa = 8.90;
-        double taxaValorInvestido = 0.002 * valorInvestido;
+        double taxaValorInvestido = valorInvestido * 0.002;
+        return taxaValorInvestido + taxaFixa;
     }
 
     @Override
-    public void calculoImposto(int tempoTrading, double lucro) {
+    public void calculoImposto(int tempoTrading, double resultadoFinanceiro) {
         double impostoRenda = 0;
-        if (tempoTrading < 5) {
+        if (tempoTrading < 5 && resultadoFinanceiro > 0.0) {
             impostoRenda = 22.5;
         }
-        else {
+        else if (tempoTrading > 5 && resultadoFinanceiro > 0) {
             impostoRenda = 13.0;
+        }
+        else {
+            impostoRenda = 0;
         }
     }
 
