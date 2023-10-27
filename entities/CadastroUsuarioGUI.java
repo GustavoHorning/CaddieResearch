@@ -20,7 +20,7 @@ public class CadastroUsuarioGUI extends JFrame {
     public CadastroUsuarioGUI() {
         setTitle("Cadastro de Usuário");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new GridLayout(6, 2)); // Adicionei uma linha adicional para a mensagem
+        setLayout(new GridLayout(6, 2));
 
         JLabel nomeLabel = new JLabel("Nome:");
         nomeField = new JTextField(20);
@@ -44,7 +44,7 @@ public class CadastroUsuarioGUI extends JFrame {
         });
 
         sairButton = new JButton("Sair");
-        sairButton.setEnabled(false); // Inicialmente desabilitado
+        sairButton.setEnabled(false);
 
         sairButton.addActionListener(new ActionListener() {
             @Override
@@ -61,9 +61,9 @@ public class CadastroUsuarioGUI extends JFrame {
         add(dataNascimentoField);
         add(valorInvestidoLabel);
         add(valorInvestidoField);
-        add(new JLabel()); // Espaço vazio
+        add(new JLabel());
         add(cadastrarButton);
-        add(new JLabel()); // Espaço vazio
+        add(new JLabel());
         add(sairButton);
 
         usuariosCadastrados = 0;
@@ -90,16 +90,15 @@ public class CadastroUsuarioGUI extends JFrame {
 
         usuariosCadastrados++;
 
-        // Verifica se atingiu o limite de 3 usuários
         if (usuariosCadastrados == 3) {
             cadastrarButton.setEnabled(false);
-            exibirMensagemLimiteAtingido(); // Exibe a mensagem ao atingir o limite
+            exibirMensagemLimiteAtingido(); 
         }
 
-        // Imprime todas as informações do usuário
+    
         System.out.println("Usuário cadastrado: " + nome + " (CPF: " + cpf + ", Data de Nascimento: " + dataNascimentoStr + ", Valor Investido: " + valorInvestido + ")");
 
-        // Limpa os campos após o cadastro
+        
         nomeField.setText("");
         cpfField.setText("");
         dataNascimentoField.setText("");
@@ -108,7 +107,7 @@ public class CadastroUsuarioGUI extends JFrame {
 
     private void exibirMensagemLimiteAtingido() {
         JOptionPane.showMessageDialog(this, "Limite de três usuários atingido.", "Limite Atingido", JOptionPane.INFORMATION_MESSAGE);
-        sairButton.setEnabled(true); // Habilita o botão "Sair" para encerrar a interface
+        sairButton.setEnabled(true);
     }
 
     private void encerrarJanela() {
