@@ -90,15 +90,14 @@ public class CadastroUsuarioGUI extends JFrame {
 
         usuariosCadastrados++;
 
+
         if (usuariosCadastrados == 3) {
             cadastrarButton.setEnabled(false);
-            exibirMensagemLimiteAtingido(); 
+            exibirMensagemLimiteAtingido();
         }
 
-    
         System.out.println("Usuário cadastrado: " + nome + " (CPF: " + cpf + ", Data de Nascimento: " + dataNascimentoStr + ", Valor Investido: " + valorInvestido + ")");
 
-        
         nomeField.setText("");
         cpfField.setText("");
         dataNascimentoField.setText("");
@@ -112,7 +111,11 @@ public class CadastroUsuarioGUI extends JFrame {
 
     private void encerrarJanela() {
         dispose();
+
+        SelecionarArquivoGUI selecionarArquivoGUI = new SelecionarArquivoGUI();
+        selecionarArquivoGUI.setVisible(true);
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
