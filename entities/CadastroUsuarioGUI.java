@@ -90,7 +90,6 @@ public class CadastroUsuarioGUI extends JFrame {
 
         usuariosCadastrados++;
 
-
         if (usuariosCadastrados == 3) {
             cadastrarButton.setEnabled(false);
             exibirMensagemLimiteAtingido();
@@ -116,7 +115,6 @@ public class CadastroUsuarioGUI extends JFrame {
         selecionarArquivoGUI.setVisible(true);
     }
 
-
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -124,5 +122,23 @@ public class CadastroUsuarioGUI extends JFrame {
                 new CadastroUsuarioGUI().setVisible(true);
             }
         });
+    }
+
+    public int getUsuariosCadastrados() {
+        return usuariosCadastrados;
+    }
+
+    public Usuario getUsuario1() {
+        return usuario1;
+    }
+
+    // Método para obter o segundo usuário
+    public Usuario getUsuario2() {
+        return usuario2;
+    }
+
+    // Método para obter o terceiro usuário
+    public Usuario getUsuario3() {
+        return usuario3;
     }
 }

@@ -8,11 +8,14 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SelecionarArquivoGUI extends JFrame {
     private JButton selecionarArquivoButton;
     private JFileChooser fileChooser;
     private int fileCount = 0;
+    private JButton sairButton;
 
     public SelecionarArquivoGUI() {
         setTitle("Selecionar Arquivo CSV");
@@ -36,6 +39,8 @@ public class SelecionarArquivoGUI extends JFrame {
                     int resultado = fileChooser.showOpenDialog(null);
 
                     if (resultado == JFileChooser.APPROVE_OPTION) {
+                        List<Researchs> researchsList = new ArrayList<>();
+
                         try {
                             BufferedReader br = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
                             String line;
@@ -51,30 +56,36 @@ public class SelecionarArquivoGUI extends JFrame {
                                     double retorno = extrairPorcentagem(data[4]);
                                     double resultadoFinanceiro = extrairValor(data[5]);
 
-                                    if (fileCount == 0) {
-                                        Researchs research1 = new Researchs(new Ativo(ticket, nomeEmpresa), valorInvestido, tempoTrading, retorno, resultadoFinanceiro);
-                                        System.out.println(research1.getAtivo().getTicket());
-                                        System.out.println(research1.getAtivo().getNomeEmpresa());
-                                    } else if (fileCount == 1) {
-                                        Researchs research2 = new Researchs(new Ativo(ticket, nomeEmpresa), valorInvestido, tempoTrading, retorno, resultadoFinanceiro);
-                                        System.out.println(research2.getAtivo().getTicket());
-                                        System.out.println(research2.getAtivo().getNomeEmpresa());
-                                    } else if (fileCount == 2) {
-                                        Researchs research3 = new Researchs(new Ativo(ticket, nomeEmpresa), valorInvestido, tempoTrading, retorno, resultadoFinanceiro);
-                                        System.out.println(research3.getAtivo().getTicket());
-                                        System.out.println(research3.getAtivo().getNomeEmpresa());
-                                    }
-                                    fileCount++;
-
-                                    if (fileCount == 3) {
-                                        JOptionPane.showMessageDialog(null, "Limite de arquivos atingido.");
-                                        dispose();
-                                        break;
-                                    }
+                                    Researchs research = new Researchs(new Ativo(ticket, nomeEmpresa), valorInvestido, tempoTrading, retorno, resultadoFinanceiro);
+                                    researchsList.add(research);
                                 }
                             }
 
                             br.close();
+
+                            if (!researchsList.isEmpty()) {
+                                for (Researchs research : researchsList) {
+                                    System.out.println("Ticket: " + research.getAtivo().getTicket());
+                                    System.out.println("Nome da Empresa: " + research.getAtivo().getNomeEmpresa());
+                                    System.out.println("Valor Investido: " + research.getValorInvestido());
+                                    System.out.println("Tempo de Trading: " + research.getTempoTranding());
+                                    System.out.println("Retorno: " + research.getRetorno());
+                                    System.out.println("Resultado Financeiro: " + research.getResultadoFinanceiro());
+                                    System.out.println();
+                                }
+
+                                fileCount++; // Incrementa o contador após a leitura bem-sucedida.
+                            }
+
+                            if (fileCount == 3) {
+                                sairButton.setEnabled(true);
+                                JOptionPane.showMessageDialog(null, "Limite de arquivos atingido.");
+                            }
+
+                            if (fileCount >= 3) {
+                                selecionarArquivoButton.setEnabled(false);
+                            }
+
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
@@ -85,7 +96,18 @@ public class SelecionarArquivoGUI extends JFrame {
             }
         });
 
+        sairButton = new JButton("Sair");
+        sairButton.setEnabled(false);
+
+        sairButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                encerrarJanela();
+            }
+        });
+
         add(selecionarArquivoButton);
+        add(sairButton);
         pack();
         setLocationRelativeTo(null);
     }
@@ -98,6 +120,10 @@ public class SelecionarArquivoGUI extends JFrame {
     private double extrairPorcentagem(String porcentagemStr) {
         porcentagemStr = porcentagemStr.replace("%", "").replace(",", ".");
         return Double.parseDouble(porcentagemStr);
+    }
+
+    private void encerrarJanela() {
+        dispose();
     }
 
     public static void main(String[] args) {

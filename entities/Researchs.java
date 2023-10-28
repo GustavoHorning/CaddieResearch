@@ -8,7 +8,6 @@ public class Researchs {
 
     private Ativo ativo;
     private Double valorInvestido;
-
     private Integer tempoTranding;
     private Double retorno;
     private Double resultadoFinanceiro;
