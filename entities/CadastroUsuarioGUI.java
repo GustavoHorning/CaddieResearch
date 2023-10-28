@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CadastroUsuarioGUI extends JFrame {
     private JTextField nomeField, cpfField, dataNascimentoField, valorInvestidoField;
@@ -16,6 +18,8 @@ public class CadastroUsuarioGUI extends JFrame {
     private Usuario usuario2;
     private Usuario usuario3;
     private int usuariosCadastrados;
+
+    private List<Researchs> pesquisaList; // Adicione a lista de pesquisas
 
     public CadastroUsuarioGUI() {
         setTitle("Cadastro de Usuário");
@@ -67,6 +71,7 @@ public class CadastroUsuarioGUI extends JFrame {
         add(sairButton);
 
         usuariosCadastrados = 0;
+        pesquisaList = new ArrayList<>(); // Inicialize a lista no construtor
         pack();
         setLocationRelativeTo(null);
     }
@@ -124,6 +129,16 @@ public class CadastroUsuarioGUI extends JFrame {
         });
     }
 
+    // Método para adicionar uma pesquisa à lista
+    public void adicionarPesquisa(Researchs pesquisa) {
+        pesquisaList.add(pesquisa);
+    }
+
+    // Método para obter a lista de pesquisas
+    public List<Researchs> getResearchsList() {
+        return pesquisaList;
+    }
+
     public int getUsuariosCadastrados() {
         return usuariosCadastrados;
     }
@@ -132,12 +147,10 @@ public class CadastroUsuarioGUI extends JFrame {
         return usuario1;
     }
 
-    // Método para obter o segundo usuário
     public Usuario getUsuario2() {
         return usuario2;
     }
 
-    // Método para obter o terceiro usuário
     public Usuario getUsuario3() {
         return usuario3;
     }

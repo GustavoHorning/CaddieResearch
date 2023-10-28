@@ -1,5 +1,7 @@
 package entities;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
         CadastroUsuarioGUI cadastroUsuarioGUI = new CadastroUsuarioGUI();
@@ -14,7 +16,6 @@ public class Main {
             }
         }
 
-
         Usuario usuario1 = cadastroUsuarioGUI.getUsuario1();
         Usuario usuario2 = cadastroUsuarioGUI.getUsuario2();
         Usuario usuario3 = cadastroUsuarioGUI.getUsuario3();
@@ -23,6 +24,16 @@ public class Main {
         System.out.println("Usuário 2: " + usuario2.getNome());
         System.out.println("Usuário 3: " + usuario3.getNome());
 
-
+        List<Researchs> pesquisas = cadastroUsuarioGUI.getResearchsList();
+        for (Researchs pesquisa : pesquisas) {
+            // Faça o que for necessário com as pesquisas
+            System.out.println("Ticket: " + pesquisa.getAtivo().getTicket());
+            System.out.println("Nome da Empresa: " + pesquisa.getAtivo().getNomeEmpresa());
+            System.out.println("Valor Investido: " + pesquisa.getValorInvestido());
+            System.out.println("Tempo de Trading: " + pesquisa.getTempoTranding());
+            System.out.println("Retorno: " + pesquisa.getRetorno());
+            System.out.println("Resultado Financeiro: " + pesquisa.getResultadoFinanceiro());
+            System.out.println();
+        }
     }
 }

@@ -17,6 +17,8 @@ public class SelecionarArquivoGUI extends JFrame {
     private int fileCount = 0;
     private JButton sairButton;
 
+    private CadastroUsuarioGUI cadastroUsuarioGUI;
+
     public SelecionarArquivoGUI() {
         setTitle("Selecionar Arquivo CSV");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
