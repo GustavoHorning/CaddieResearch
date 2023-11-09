@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Main extends JFrame implements ComparacaoResearchs {
@@ -24,6 +23,9 @@ public class Main extends JFrame implements ComparacaoResearchs {
     private Usuario usuario1;
     private Usuario usuario2;
     private Usuario usuario3;
+    private double retornoPorcentagemResearch1 = 0;
+    private double retornoPorcentagemResearch2 = 0;
+    private double retornoPorcentagemResearch3 = 0;
 
 
     public Main() {
@@ -182,13 +184,15 @@ public class Main extends JFrame implements ComparacaoResearchs {
 
                             if (fileCount == 0) {
                                 retornoResearch1.add(research.getRetorno());
+                                retornoPorcentagemResearch1 += research.getRetorno();
                             } else if (fileCount == 1) {
                                 retornoResearch2.add(research.getRetorno());
+                                retornoPorcentagemResearch2 += research.getRetorno();
                             } else if (fileCount == 2) {
                                 retornoResearch3.add(research.getRetorno());
+                                retornoPorcentagemResearch3 += research.getRetorno();
                             }
                         }
-
                         fileCount++;
                     }
 
@@ -199,6 +203,21 @@ public class Main extends JFrame implements ComparacaoResearchs {
 
                     if (fileCount >= 3) {
                         selecionarArquivoButton.setEnabled(false);
+                        System.out.printf("%.2f\n",retornoPorcentagemResearch1);
+                        System.out.printf("%.2f\n",retornoPorcentagemResearch2);
+                        System.out.printf("%.2f\n",retornoPorcentagemResearch3);
+
+
+                        int melhorResearch = maiorValor(retornoPorcentagemResearch1,retornoPorcentagemResearch2,retornoPorcentagemResearch3);
+
+                        if (melhorResearch == 0) {
+                            System.out.println("Research 1 ganhou");
+                        } else if (melhorResearch == 1) {
+                            System.out.println("Research 2 ganhou");
+                        } else {
+                            System.out.println("Research 3 ganhou");
+                        }
+
                     }
 
                 } catch (IOException ex) {
@@ -207,29 +226,6 @@ public class Main extends JFrame implements ComparacaoResearchs {
             }
         } else {
             JOptionPane.showMessageDialog(null, "Limite de arquivos atingido.");
-            System.out.println("IMPRIMINDOOOOOOOOOOOOOOO");
-            double retornoPorcentagemResearch1 = 0;
-            double retornoPorcentagemResearch2 = 0;
-            double retornoPorcentagemResearch3 = 0;
-
-            for (double research1 : retornoResearch1) {
-                retornoPorcentagemResearch1 += research1;
-            }
-            for (double research2 : retornoResearch2) {
-                retornoPorcentagemResearch2 += research2;
-            }
-            for (double research3 : retornoResearch3) {
-                retornoPorcentagemResearch3 += research3;
-            }
-            int melhorResearch = maiorValor(retornoPorcentagemResearch1, retornoPorcentagemResearch2, retornoPorcentagemResearch3);
-
-            if (melhorResearch == 0) {
-                System.out.println("Research 1");
-            } else if (melhorResearch == 1) {
-                System.out.println("Research 2");
-            } else {
-                System.out.println("Research 3");
-            }
         }
     }
 
@@ -255,9 +251,10 @@ public class Main extends JFrame implements ComparacaoResearchs {
             }
         });
     }
+
     @Override
     public int maiorValor(double valor1, double valor2, double valor3) {
-        int melhorResearch = -1;
+        int melhorResearch = 0;
         if ((valor1 > valor2) && (valor1 > valor3)) {
             melhorResearch = 0;
         }
