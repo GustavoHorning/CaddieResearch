@@ -17,7 +17,7 @@ public class Main extends JFrame implements ComparacaoResearchs {
     private JTextField nomeField, cpfField, dataNascimentoField, valorInvestidoField;
     private JButton cadastrarButton, selecionarArquivoButton;
     private JFileChooser fileChooser;
-    private JButton sairButton;
+    private JButton mostrarResultadosButton;
     private List<Researchs> pesquisaList;
     private int usuariosCadastrados;
     private int fileCount = 0;
@@ -27,7 +27,8 @@ public class Main extends JFrame implements ComparacaoResearchs {
     private double retornoPorcentagemResearch1 = 0;
     private double retornoPorcentagemResearch2 = 0;
     private double retornoPorcentagemResearch3 = 0;
-    private double confirmacaoSair = 0;
+
+    private double confirmacaoMostrarResultados = 0;
 
     public Main() {
         setTitle("Cadastro de Usuário e Seleção de Arquivo");
@@ -65,10 +66,10 @@ public class Main extends JFrame implements ComparacaoResearchs {
             }
         });
 
-        sairButton = new JButton("Sair");
-        sairButton.setEnabled(false);
+        mostrarResultadosButton = new JButton("Mostrar resultados");
+        mostrarResultadosButton.setEnabled(false);
 
-        sairButton.addActionListener(new ActionListener() {
+        mostrarResultadosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 encerrarJanela();
@@ -86,7 +87,7 @@ public class Main extends JFrame implements ComparacaoResearchs {
         add(new JLabel());
         add(cadastrarButton);
         add(selecionarArquivoButton);
-        add(sairButton);
+        add(mostrarResultadosButton);
 
         usuariosCadastrados = 0;
 
@@ -116,9 +117,9 @@ public class Main extends JFrame implements ComparacaoResearchs {
         if (usuariosCadastrados == 3) {
             cadastrarButton.setEnabled(false);
             exibirMensagemLimiteAtingido();
-            confirmacaoSair += 1;
-            if (confirmacaoSair == 2){
-                sairButton.setEnabled(true);
+            confirmacaoMostrarResultados += 1;
+            if (confirmacaoMostrarResultados == 2){
+                mostrarResultadosButton.setEnabled(true);
             }
         }
 
@@ -150,93 +151,93 @@ public class Main extends JFrame implements ComparacaoResearchs {
                 BancoCentralFicticio bancoCentralFicticio = new BancoCentralFicticio("Banco central ficticio");
 
 
-                    List<Researchs> researchsList = new ArrayList<>();
+                List<Researchs> researchsList = new ArrayList<>();
 
-                    try {
-                        BufferedReader br = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
-                        String line;
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader(fileChooser.getSelectedFile()));
+                    String line;
 
-                        while ((line = br.readLine()) != null) {
-                            String[] data = line.split(";");
+                    while ((line = br.readLine()) != null) {
+                        String[] data = line.split(";");
 
-                            if (data.length >= 6) {
-                                String ticket = data[0];
-                                String nomeEmpresa = data[1];
-                                double valorInvestido = extrairValor(data[2]);
-                                int tempoTrading = Integer.parseInt(data[3]);
-                                double retorno = extrairPorcentagem(data[4]);
-                                double resultadoFinanceiro = extrairValor(data[5]);
+                        if (data.length >= 6) {
+                            String ticket = data[0];
+                            String nomeEmpresa = data[1];
+                            double valorInvestido = extrairValor(data[2]);
+                            int tempoTrading = Integer.parseInt(data[3]);
+                            double retorno = extrairPorcentagem(data[4]);
+                            double resultadoFinanceiro = extrairValor(data[5]);
 
-                                Researchs research = new Researchs(new Ativo(ticket, nomeEmpresa), valorInvestido, tempoTrading, retorno, resultadoFinanceiro);
-                                researchsList.add(research);
-                            }
+                            Researchs research = new Researchs(new Ativo(ticket, nomeEmpresa), valorInvestido, tempoTrading, retorno, resultadoFinanceiro);
+                            researchsList.add(research);
                         }
-
-                        br.close();
-
-                        if (!researchsList.isEmpty()) {
-                            for (Researchs research : researchsList) {
-                                System.out.println("Ticket: " + research.getAtivo().getTicket());
-                                System.out.println("Nome da Empresa: " + research.getAtivo().getNomeEmpresa());
-                                System.out.println("Valor Investido: " + research.getValorInvestido());
-                                System.out.println("Tempo de Trading: " + research.getTempoTranding());
-                                System.out.println("Retorno: " + research.getRetorno());
-                                System.out.println("Resultado Financeiro: " + research.getResultadoFinanceiro());
-                                System.out.println();
-                                System.out.printf("Calculo de taxa de corretagem do(a) empresa: %s - (ticket: %s): ",
-                                        research.getAtivo().getNomeEmpresa(), research.getAtivo().getTicket());
-                                System.out.printf("%.2f\n", bancoCentralFicticio.calculoTaxaCorretagem(research.getValorInvestido()));
-                                System.out.printf("Calculo de imposto do(a) empresa: %s - (ticket: %s): ",
-                                        research.getAtivo().getNomeEmpresa(), research.getAtivo().getTicket());
-                                System.out.printf("%.2f %%\n", bancoCentralFicticio.calculoImposto(research.getTempoTranding(), research.getResultadoFinanceiro()));
-
-
-                                System.out.println();
-
-                                if (fileCount == 0) {
-                                    retornoResearch1.add(research.getRetorno());
-                                    retornoPorcentagemResearch1 += research.getRetorno();
-                                } else if (fileCount == 1) {
-                                    retornoResearch2.add(research.getRetorno());
-                                    retornoPorcentagemResearch2 += research.getRetorno();
-                                } else if (fileCount == 2) {
-                                    retornoResearch3.add(research.getRetorno());
-                                    retornoPorcentagemResearch3 += research.getRetorno();
-                                }
-                            }
-                            fileCount++;
-                        }
-
-                        if (fileCount == 3) {
-                            JOptionPane.showMessageDialog(null, "Limite de arquivos atingido.");
-                            confirmacaoSair += 1;
-                            if (confirmacaoSair == 2){
-                                sairButton.setEnabled(true);
-                            }
-                        }
-
-                        if (fileCount >= 3) {
-                            selecionarArquivoButton.setEnabled(false);
-                            System.out.printf("%.2f\n", retornoPorcentagemResearch1);
-                            System.out.printf("%.2f\n", retornoPorcentagemResearch2);
-                            System.out.printf("%.2f\n", retornoPorcentagemResearch3);
-
-
-                            int melhorResearch = maiorValor(retornoPorcentagemResearch1, retornoPorcentagemResearch2, retornoPorcentagemResearch3);
-
-                            if (melhorResearch == 0) {
-                                System.out.println("Research 1 ganhou");
-                            } else if (melhorResearch == 1) {
-                                System.out.println("Research 2 ganhou");
-                            } else {
-                                System.out.println("Research 3 ganhou");
-                            }
-
-                        }
-
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
                     }
+
+                    br.close();
+
+                    if (!researchsList.isEmpty()) {
+                        for (Researchs research : researchsList) {
+                            System.out.println("Ticket: " + research.getAtivo().getTicket());
+                            System.out.println("Nome da Empresa: " + research.getAtivo().getNomeEmpresa());
+                            System.out.println("Valor Investido: " + research.getValorInvestido());
+                            System.out.println("Tempo de Trading: " + research.getTempoTranding());
+                            System.out.println("Retorno: " + research.getRetorno());
+                            System.out.println("Resultado Financeiro: " + research.getResultadoFinanceiro());
+                            System.out.println();
+                            System.out.printf("Calculo de taxa de corretagem do(a) empresa: %s - (ticket: %s): ",
+                                    research.getAtivo().getNomeEmpresa(), research.getAtivo().getTicket());
+                            System.out.printf("%.2f\n", bancoCentralFicticio.calculoTaxaCorretagem(research.getValorInvestido()));
+                            System.out.printf("Calculo de imposto do(a) empresa: %s - (ticket: %s): ",
+                                    research.getAtivo().getNomeEmpresa(), research.getAtivo().getTicket());
+                            System.out.printf("%.2f %%\n", bancoCentralFicticio.calculoImposto(research.getTempoTranding(), research.getResultadoFinanceiro()));
+
+
+                            System.out.println();
+
+                            if (fileCount == 0) {
+                                retornoResearch1.add(research.getRetorno());
+                                retornoPorcentagemResearch1 += research.getRetorno();
+                            } else if (fileCount == 1) {
+                                retornoResearch2.add(research.getRetorno());
+                                retornoPorcentagemResearch2 += research.getRetorno();
+                            } else if (fileCount == 2) {
+                                retornoResearch3.add(research.getRetorno());
+                                retornoPorcentagemResearch3 += research.getRetorno();
+                            }
+                        }
+                        fileCount++;
+                    }
+
+                    if (fileCount == 3) {
+                        JOptionPane.showMessageDialog(null, "Limite de arquivos atingido.");
+                        confirmacaoMostrarResultados += 1;
+                        if (confirmacaoMostrarResultados == 2){
+                            mostrarResultadosButton.setEnabled(true);
+                        }
+                    }
+
+                    if (fileCount >= 3) {
+                        selecionarArquivoButton.setEnabled(false);
+                        System.out.printf("%.2f\n", retornoPorcentagemResearch1);
+                        System.out.printf("%.2f\n", retornoPorcentagemResearch2);
+                        System.out.printf("%.2f\n", retornoPorcentagemResearch3);
+
+
+                        int melhorResearch = maiorValor(retornoPorcentagemResearch1, retornoPorcentagemResearch2, retornoPorcentagemResearch3);
+
+                        if (melhorResearch == 0) {
+                            System.out.println("Research 1 ganhou");
+                        } else if (melhorResearch == 1) {
+                            System.out.println("Research 2 ganhou");
+                        } else {
+                            System.out.println("Research 3 ganhou");
+                        }
+
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
 
             } else {
                 JOptionPane.showMessageDialog(null, "Limite de arquivos atingido.");
