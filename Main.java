@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class Main extends JFrame implements ComparacaoResearchs {
@@ -72,7 +74,7 @@ public class Main extends JFrame implements ComparacaoResearchs {
         mostrarResultadosButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                encerrarJanela();
+                mostrarResultados();
             }
         });
 
@@ -245,6 +247,24 @@ public class Main extends JFrame implements ComparacaoResearchs {
         }
     }
 
+    class PosicaoResearch {
+        private String nome;
+        private double retorno;
+
+        public PosicaoResearch(String nome, double retorno) {
+            this.nome = nome;
+            this.retorno = retorno;
+        }
+
+        public String getNome() {
+            return nome;
+        }
+
+        public double getRetorno() {
+            return retorno;
+        }
+    }
+
     private double extrairValor(String valorStr) {
         valorStr = valorStr.replace("R$ ", "").replace(".", "").replace(",", ".");
         return Double.parseDouble(valorStr);
@@ -255,9 +275,41 @@ public class Main extends JFrame implements ComparacaoResearchs {
         return Double.parseDouble(porcentagemStr);
     }
 
-    private void encerrarJanela() {
+    private void mostrarResultados() {
+        JFrame resultadosFrame = new JFrame("Resultados");
+        resultadosFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        resultadosFrame.setLayout(new BorderLayout());
+
+        List<PosicaoResearch> listaDePosicoes = new ArrayList<>();
+        listaDePosicoes.add(new PosicaoResearch("Research 1", retornoPorcentagemResearch1));
+        listaDePosicoes.add(new PosicaoResearch("Research 2", retornoPorcentagemResearch2));
+        listaDePosicoes.add(new PosicaoResearch("Research 3", retornoPorcentagemResearch3));
+
+        listaDePosicoes.sort(Comparator.comparing(PosicaoResearch::getRetorno).reversed());
+
+        JTextArea resultadosTextArea = new JTextArea();
+        resultadosTextArea.setEditable(false);
+
+        resultadosTextArea.append("Lista de resultados das Researchs:\n\n");
+        for (int i = 0; i < listaDePosicoes.size(); i++) {
+            PosicaoResearch posicaoResearch = listaDePosicoes.get(i);
+            resultadosTextArea.append(
+                    (i + 1) + "º lugar: " +
+                            posicaoResearch.getNome() + " com um retorno de " +
+                            String.format("%.2f%%", posicaoResearch.getRetorno()) + "\n"
+            );
+        }
+
+
+        JScrollPane scrollPane = new JScrollPane(resultadosTextArea);
+        resultadosFrame.add(scrollPane, BorderLayout.CENTER);
+
+        resultadosFrame.pack();
+        resultadosFrame.setLocationRelativeTo(null);
+        resultadosFrame.setVisible(true);
         dispose();
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
